@@ -138,14 +138,8 @@
     const SUPABASE_URL = 'https://ltfkzkxiuvbvksugocna.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx0Zmt6a3hpdXZidmtzdWdvY25hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NDEwNDYsImV4cCI6MjEwOTAxNzA0Nn0.iPAsbG4Fd-uG4kUm8LvXtKs3XuAazS-8k-auvj74ptE';
     
-    // Make sure this matches your exact bucket name in Supabase Storage!
+    // Replace with your exact Supabase Storage Bucket name!
     const BUCKET_NAME = 'materials';
-
-    // Pre-computed SHA-256 Hashes for "Surya Is Goat" and "1249"
-    const VALID_HASHES = [
-      "94145924dd1804f8dbec70b7495066487e411efcfbb9bf9aeedcb7b5204481d1", // SHA-256 for "Surya Is Goat"
-      "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"  // SHA-256 for "1249"
-    ];
 
     let supabaseClient = null;
     let materialsList = [];
@@ -306,10 +300,9 @@
       renderGroupedMaterials(materialsList);
     }
 
-    // Secure SHA-256 Hashing Passcode Verification
     async function hashString(str) {
       const encoder = new TextEncoder();
-      const data = encoder.encode(str);
+      const data = encoder.encode(str.trim());
       const hashBuffer = await crypto.subtle.digest('SHA-256', data);
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
@@ -320,8 +313,18 @@
         const pass = prompt("Enter Admin Passcode:");
         if (!pass) return;
 
-        const hashedInput = await hashString(pass);
-        if (VALID_HASHES.includes(hashedInput)) {
+        const cleanPass = pass.trim();
+        const hashedInput = await hashString(cleanPass);
+        
+        // Exact matches, lowercase, and SHA-256 hash checks
+        const isMatch = 
+          cleanPass === "Surya Is Goat" || 
+          cleanPass === "1249" || 
+          cleanPass.toLowerCase() === "surya is goat" ||
+          hashedInput === "94145924dd1804f8dbec70b7495066487e411efcfbb9bf9aeedcb7b5204481d1" ||
+          hashedInput === "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b";
+
+        if (isMatch) {
           isAdmin = true;
           document.getElementById('admin-panel').classList.remove('hidden');
           document.getElementById('admin-btn-text').textContent = "Exit Admin";
