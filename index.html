@@ -13,59 +13,14 @@
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-    
-    * {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    body {
-      background-color: #030712;
-      color: #f3f4f6;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    .glass-panel {
-      background: rgba(17, 24, 39, 0.7);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .glass-card {
-      background: rgba(31, 41, 55, 0.5);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .glass-card:hover {
-      border-color: rgba(6, 182, 212, 0.4);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px -10px rgba(6, 182, 212, 0.2);
-    }
-
-    .gradient-text {
-      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .active-tab {
-      background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
-      color: white;
-      box-shadow: 0 4px 15px -3px rgba(79, 70, 229, 0.4);
-    }
-
-    canvas#particle-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
+    * { font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: #030712; color: #f3f4f6; min-height: 100vh; overflow-x: hidden; }
+    .glass-panel { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    .glass-card { background: rgba(31, 41, 55, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .glass-card:hover { border-color: rgba(6, 182, 212, 0.4); }
+    .gradient-text { background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .active-tab { background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color: white; box-shadow: 0 4px 15px -3px rgba(79, 70, 229, 0.4); }
+    canvas#particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
   </style>
 </head>
 <body class="relative">
@@ -98,7 +53,7 @@
     <!-- Main Content Container -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
       
-      <!-- Admin Upload Section (Hidden by default) -->
+      <!-- Admin Upload Section -->
       <section id="admin-panel" class="hidden mb-10 p-6 glass-panel rounded-2xl border-cyan-500/30">
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center space-x-3">
@@ -110,13 +65,25 @@
 
         <form id="upload-form" onsubmit="handleUpload(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-gray-400 mb-1">Subject Title</label>
-            <input type="text" id="up-title" required placeholder="e.g. Data Structures - Unit 1" class="w-full px-4 py-2.5 bg-gray-900/80 border border-gray-700 rounded-xl focus:border-cyan-500 focus:outline-none text-sm text-white">
+            <label class="block text-xs font-semibold text-gray-400 mb-1">Subject Name</label>
+            <input type="text" id="up-title" required placeholder="e.g. Data Structures" class="w-full px-4 py-2.5 bg-gray-900/80 border border-gray-700 rounded-xl focus:border-cyan-500 focus:outline-none text-sm text-white">
           </div>
 
           <div>
             <label class="block text-xs font-semibold text-gray-400 mb-1">Course Code</label>
             <input type="text" id="up-code" required placeholder="e.g. CS201" class="w-full px-4 py-2.5 bg-gray-900/80 border border-gray-700 rounded-xl focus:border-cyan-500 focus:outline-none text-sm text-white">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-400 mb-1">Unit / Category</label>
+            <select id="up-unit" class="w-full px-4 py-2.5 bg-gray-900/80 border border-gray-700 rounded-xl focus:border-cyan-500 focus:outline-none text-sm text-white">
+              <option value="Unit 1">Unit 1</option>
+              <option value="Unit 2">Unit 2</option>
+              <option value="Unit 3">Unit 3</option>
+              <option value="Unit 4">Unit 4</option>
+              <option value="Unit 5">Unit 5</option>
+              <option value="PYQ">Previous Year Questions (PYQ)</option>
+            </select>
           </div>
 
           <div>
@@ -137,12 +104,12 @@
             </select>
           </div>
 
-          <div class="md:col-span-2 lg:col-span-2">
+          <div>
             <label class="block text-xs font-semibold text-gray-400 mb-1">Select PDF File</label>
             <input type="file" id="up-file" accept=".pdf" required class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-cyan-500/10 file:text-cyan-400 hover:file:bg-cyan-500/20 cursor-pointer">
           </div>
 
-          <div class="md:col-span-2 lg:col-span-3 flex justify-end">
+          <div class="md:col-span-2 lg:col-span-3 flex justify-end pt-2">
             <button type="submit" id="upload-btn" class="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-indigo-600 text-white font-semibold text-sm rounded-xl hover:opacity-90 transition-all flex items-center space-x-2">
               <i data-lucide="plus-circle" class="w-4 h-4"></i>
               <span>Publish PDF to Cloud</span>
@@ -160,31 +127,33 @@
         <button onclick="filterYear('4')" id="tab-4" class="year-tab glass-card px-5 py-2.5 rounded-xl font-semibold text-sm text-gray-300 hover:text-white transition-all whitespace-nowrap">4th Year</button>
       </div>
 
-      <!-- Materials List Grid -->
-      <div id="materials-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Rendered via JS -->
+      <!-- Materials Accordion Container -->
+      <div id="materials-container" class="space-y-4">
+        <!-- Grouped by Subject via JS -->
       </div>
     </main>
   </div>
 
   <script>
-    // Supabase Connection Credentials
     const SUPABASE_URL = 'https://ltfkzkxiuvbvksugocna.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx0Zmt6a3hpdXZidmtzdWdvY25hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NDEwNDYsImV4cCI6MjEwOTAxNzA0Nn0.iPAsbG4Fd-uG4kUm8LvXtKs3XuAazS-8k-auvj74ptE';
-
-    // Change this variable to match your new Supabase Storage Bucket name!
+    
+    // Make sure this matches your exact bucket name in Supabase Storage!
     const BUCKET_NAME = 'materials';
+
+    // Pre-computed SHA-256 Hashes for "Surya Is Goat" and "1249"
+    const VALID_HASHES = [
+      "94145924dd1804f8dbec70b7495066487e411efcfbb9bf9aeedcb7b5204481d1", // SHA-256 for "Surya Is Goat"
+      "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"  // SHA-256 for "1249"
+    ];
 
     let supabaseClient = null;
     let materialsList = [];
     let currentYearFilter = 'all';
     let isAdmin = false;
 
-    // Initialize Supabase Client
     if (window.supabase) {
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    } else {
-      console.warn("Supabase SDK not loaded yet.");
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -192,7 +161,6 @@
       fetchMaterials();
       initParticles();
 
-      // Subscribe to real-time changes across all connected devices
       if (supabaseClient) {
         supabaseClient
           .channel('public:materials')
@@ -204,28 +172,22 @@
     });
 
     async function fetchMaterials() {
-      if (!supabaseClient) {
-        renderMaterials([]);
-        return;
-      }
+      if (!supabaseClient) return renderGroupedMaterials([]);
 
       const { data, error } = await supabaseClient
         .from('materials')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error("Error fetching materials:", error);
-        return;
-      }
+      if (error) return console.error("Error fetching materials:", error);
 
       materialsList = data || [];
-      renderMaterials(materialsList);
+      renderGroupedMaterials(materialsList);
     }
 
-    function renderMaterials(items) {
-      const grid = document.getElementById('materials-grid');
-      grid.innerHTML = '';
+    function renderGroupedMaterials(items) {
+      const container = document.getElementById('materials-container');
+      container.innerHTML = '';
 
       const filtered = items.filter(item => {
         if (currentYearFilter === 'all') return true;
@@ -233,8 +195,8 @@
       });
 
       if (filtered.length === 0) {
-        grid.innerHTML = `
-          <div class="col-span-full py-16 text-center glass-card rounded-2xl">
+        container.innerHTML = `
+          <div class="py-16 text-center glass-card rounded-2xl">
             <i data-lucide="folder-open" class="w-12 h-12 text-gray-500 mx-auto mb-3"></i>
             <p class="text-gray-400 font-medium">No PDF materials found for this section.</p>
           </div>
@@ -243,36 +205,96 @@
         return;
       }
 
+      // Group materials by Subject Title / Code
+      const grouped = {};
       filtered.forEach(item => {
+        const key = item.title.trim() + " (" + item.code.trim() + ")";
+        if (!grouped[key]) {
+          grouped[key] = {
+            title: item.title,
+            code: item.code,
+            year: item.year,
+            sem: item.sem,
+            units: {}
+          };
+        }
+        const unitName = item.unit || "Unit 1";
+        if (!grouped[key].units[unitName]) grouped[key].units[unitName] = [];
+        grouped[key].units[unitName].push(item);
+      });
+
+      // Render Group Accordions
+      Object.keys(grouped).forEach((subjectKey, index) => {
+        const subject = grouped[subjectKey];
         const card = document.createElement('div');
-        card.className = 'glass-card p-6 rounded-2xl flex flex-col justify-between space-y-4';
-        card.innerHTML = `
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-semibold text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-lg border border-cyan-500/20">${item.code}</span>
-              <span class="text-xs text-gray-400">Year ${item.year} • Sem ${item.sem}</span>
+        card.className = 'glass-card rounded-2xl overflow-hidden';
+        
+        let unitsHtml = '';
+        const sortedUnits = Object.keys(subject.units).sort();
+
+        sortedUnits.forEach(uName => {
+          const files = subject.units[uName];
+          unitsHtml += `
+            <div class="p-4 bg-gray-900/40 rounded-xl border border-gray-800 space-y-2">
+              <span class="text-xs font-semibold px-2.5 py-1 bg-indigo-500/10 text-indigo-400 rounded-lg border border-indigo-500/20">${uName}</span>
+              <div class="divide-y divide-gray-800/60">
+                ${files.map(f => `
+                  <div class="flex items-center justify-between py-2 text-sm">
+                    <div class="flex items-center space-x-2">
+                      <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i>
+                      <span class="text-gray-200">${f.title} - ${f.unit || 'Unit 1'}</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                      <a href="${f.file_url}" target="_blank" download class="px-3 py-1 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 rounded-lg text-xs font-semibold flex items-center space-x-1 transition-all">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                        <span>Download</span>
+                      </a>
+                      ${isAdmin ? `
+                        <button onclick="deleteMaterial('${f.id}')" class="p-1.5 text-rose-400 hover:bg-rose-500/10 border border-rose-500/20 rounded-lg transition-all" title="Delete file">
+                          <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        </button>
+                      ` : ''}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
             </div>
-            <h3 class="text-lg font-bold text-white mb-1">${item.title}</h3>
-            <p class="text-xs text-gray-400">PDF Document</p>
-          </div>
+          `;
+        });
 
-          <div class="flex items-center justify-between pt-2 border-t border-gray-800">
-            <a href="${item.file_url}" target="_blank" download class="px-4 py-2 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 rounded-xl text-xs font-semibold flex items-center space-x-2 transition-all">
-              <i data-lucide="download" class="w-4 h-4"></i>
-              <span>Download PDF</span>
-            </a>
-
-            ${isAdmin ? `
-              <button onclick="deleteMaterial('${item.id}')" class="p-2 text-rose-400 hover:bg-rose-500/10 border border-rose-500/20 rounded-xl transition-all" title="Delete for everyone">
-                <i data-lucide="trash-2" class="w-4 h-4"></i>
-              </button>
-            ` : ''}
+        card.innerHTML = `
+          <button onclick="toggleAccordion('subject-${index}')" class="w-full p-5 flex items-center justify-between text-left focus:outline-none">
+            <div class="flex items-center space-x-4">
+              <div class="p-3 bg-cyan-500/10 border border-cyan-500/30 rounded-xl">
+                <i data-lucide="folder" class="w-6 h-6 text-cyan-400"></i>
+              </div>
+              <div>
+                <div class="flex items-center space-x-2 mb-1">
+                  <span class="text-xs font-semibold text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-cyan-500/20">${subject.code}</span>
+                  <span class="text-xs text-gray-400">Year ${subject.year} • Sem ${subject.sem}</span>
+                </div>
+                <h3 class="text-lg font-bold text-white">${subject.title}</h3>
+              </div>
+            </div>
+            <i data-lucide="chevron-down" id="icon-subject-${index}" class="w-5 h-5 text-gray-400 transform transition-transform"></i>
+          </button>
+          
+          <div id="subject-${index}" class="hidden p-5 pt-0 space-y-3 border-t border-gray-800/60">
+            ${unitsHtml}
           </div>
         `;
-        grid.appendChild(card);
+
+        container.appendChild(card);
       });
 
       if (window.lucide) lucide.createIcons();
+    }
+
+    function toggleAccordion(id) {
+      const el = document.getElementById(id);
+      const icon = document.getElementById('icon-' + id);
+      el.classList.toggle('hidden');
+      icon.classList.toggle('rotate-180');
     }
 
     function filterYear(year) {
@@ -281,18 +303,30 @@
         btn.className = 'year-tab glass-card px-5 py-2.5 rounded-xl font-semibold text-sm text-gray-300 hover:text-white transition-all whitespace-nowrap';
       });
       document.getElementById(`tab-${year}`).className = 'year-tab active-tab px-5 py-2.5 rounded-xl font-semibold text-sm transition-all whitespace-nowrap';
-      renderMaterials(materialsList);
+      renderGroupedMaterials(materialsList);
     }
 
-    function toggleAdminMode() {
+    // Secure SHA-256 Hashing Passcode Verification
+    async function hashString(str) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(str);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function toggleAdminMode() {
       if (!isAdmin) {
         const pass = prompt("Enter Admin Passcode:");
-        if (pass === "Surya Is Goat" || pass === "1249") {
+        if (!pass) return;
+
+        const hashedInput = await hashString(pass);
+        if (VALID_HASHES.includes(hashedInput)) {
           isAdmin = true;
           document.getElementById('admin-panel').classList.remove('hidden');
           document.getElementById('admin-btn-text').textContent = "Exit Admin";
-          alert("Admin Mode Activated!");
-          renderMaterials(materialsList);
+          alert("Admin Mode Granted!");
+          renderGroupedMaterials(materialsList);
         } else {
           alert("Incorrect Passcode!");
         }
@@ -300,7 +334,7 @@
         isAdmin = false;
         document.getElementById('admin-panel').classList.add('hidden');
         document.getElementById('admin-btn-text').textContent = "Admin Mode";
-        renderMaterials(materialsList);
+        renderGroupedMaterials(materialsList);
       }
     }
 
@@ -314,6 +348,7 @@
 
       const title = document.getElementById('up-title').value;
       const code = document.getElementById('up-code').value;
+      const unit = document.getElementById('up-unit').value;
       const year = parseInt(document.getElementById('up-year').value);
       const sem = parseInt(document.getElementById('up-sem').value);
 
@@ -324,26 +359,23 @@
       try {
         const fileName = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
         
-        // Upload file to the new storage bucket name
-        const { data: storageData, error: storageError } = await supabaseClient.storage
+        const { error: storageError } = await supabaseClient.storage
           .from(BUCKET_NAME)
           .upload(fileName, file);
 
         if (storageError) throw storageError;
 
-        // Retrieve public URL from the new bucket
         const { data: publicUrlData } = supabaseClient.storage
           .from(BUCKET_NAME)
           .getPublicUrl(fileName);
 
-        // Insert metadata record into materials database table
         const { error: dbError } = await supabaseClient
           .from('materials')
-          .insert([{ title, code, year, sem, file_url: publicUrlData.publicUrl }]);
+          .insert([{ title, code, unit, year, sem, file_url: publicUrlData.publicUrl }]);
 
         if (dbError) throw dbError;
 
-        alert("PDF uploaded successfully for all students!");
+        alert("PDF uploaded successfully!");
         document.getElementById('upload-form').reset();
         fetchMaterials();
       } catch (err) {
@@ -365,7 +397,7 @@
 
         if (dbError) throw dbError;
 
-        alert("Deleted globally for everyone!");
+        alert("Deleted globally!");
         fetchMaterials();
       } catch (err) {
         alert("Delete failed: " + err.message);
