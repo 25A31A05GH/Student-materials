@@ -111,7 +111,7 @@
         <form id="upload-form" onsubmit="handleUpload(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label class="block text-xs font-semibold text-gray-400 mb-1">Subject Title</label>
-            <input type="text" id="up-title" required placeholder="e.g. Data Structures" class="w-full px-4 py-2.5 bg-gray-900/80 border border-gray-700 rounded-xl focus:border-cyan-500 focus:outline-none text-sm text-white">
+            <input type="text" id="up-title" required placeholder="e.g. Data Structures - Unit 1" class="w-full px-4 py-2.5 bg-gray-900/80 border border-gray-700 rounded-xl focus:border-cyan-500 focus:outline-none text-sm text-white">
           </div>
 
           <div>
@@ -171,6 +171,9 @@
     // Supabase Connection Credentials
     const SUPABASE_URL = 'https://ltfkzkxiuvbvksugocna.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx0Zmt6a3hpdXZidmtzdWdvY25hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NDEwNDYsImV4cCI6MjEwOTAxNzA0Nn0.iPAsbG4Fd-uG4kUm8LvXtKs3XuAazS-8k-auvj74ptE';
+
+    // Change this variable to match your new Supabase Storage Bucket name!
+    const BUCKET_NAME = 'materials';
 
     let supabaseClient = null;
     let materialsList = [];
@@ -260,7 +263,7 @@
             </a>
 
             ${isAdmin ? `
-              <button onclick="deleteMaterial('${item.id}', '${item.file_url}')" class="p-2 text-rose-400 hover:bg-rose-500/10 border border-rose-500/20 rounded-xl transition-all" title="Delete for everyone">
+              <button onclick="deleteMaterial('${item.id}')" class="p-2 text-rose-400 hover:bg-rose-500/10 border border-rose-500/20 rounded-xl transition-all" title="Delete for everyone">
                 <i data-lucide="trash-2" class="w-4 h-4"></i>
               </button>
             ` : ''}
@@ -320,16 +323,20 @@
 
       try {
         const fileName = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+        
+        // Upload file to the new storage bucket name
         const { data: storageData, error: storageError } = await supabaseClient.storage
-          .from('materials')
+          .from(BUCKET_NAME)
           .upload(fileName, file);
 
         if (storageError) throw storageError;
 
+        // Retrieve public URL from the new bucket
         const { data: publicUrlData } = supabaseClient.storage
-          .from('materials')
+          .from(BUCKET_NAME)
           .getPublicUrl(fileName);
 
+        // Insert metadata record into materials database table
         const { error: dbError } = await supabaseClient
           .from('materials')
           .insert([{ title, code, year, sem, file_url: publicUrlData.publicUrl }]);
@@ -347,7 +354,7 @@
       }
     }
 
-    async function deleteMaterial(id, fileUrl) {
+    async function deleteMaterial(id) {
       if (!confirm("Are you sure you want to delete this PDF for everyone?")) return;
 
       try {
