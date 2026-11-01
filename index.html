@@ -36,7 +36,7 @@
             <i data-lucide="book-open-check" class="w-6 h-6 text-cyan-400"></i>
           </div>
           <div>
-            <span class="text-xl font-bold tracking-tight gradient-text">Pragati Learning</span>
+            <span class="text-xl font-bold tracking-tight gradient-text">PRAGATI LEARNING</span>
             <span class="block text-xs text-gray-400">Student Material Portal</span>
           </div>
         </div>
@@ -75,20 +75,20 @@
           </div>
 
           <div>
-  <label class="block text-xs font-semibold text-gray-400 mb-1">Unit / Category</label>
-  <select id="up-unit" class="w-full px-4 py-2.5 bg-gray-900/80 border border-gray-700 rounded-xl focus:border-cyan-500 focus:outline-none text-sm text-white">
-    <option value="Unit 1">Unit 1</option>
-    <option value="Unit 2">Unit 2</option>
-    <option value="Unit 3">Unit 3</option>
-    <option value="Unit 4">Unit 4</option>
-    <option value="Unit 5">Unit 5</option>
-    <option value="Unit 6">Unit 6</option>
-    <option value="Mid 1">Mid 1 Paper / Material</option>
-    <option value="Mid 2">Mid 2 Paper / Material</option>
-    <option value="PYQ">Previous Year Questions (PYQ)
-    </option>on value="Assignments">Assignments / Material</option>
-  </select>
-</div>
+            <label class="block text-xs font-semibold text-gray-400 mb-1">Unit / Category</label>
+            <select id="up-unit" class="w-full px-4 py-2.5 bg-gray-900/80 border border-gray-700 rounded-xl focus:border-cyan-500 focus:outline-none text-sm text-white">
+              <option value="Unit 1">Unit 1</option>
+              <option value="Unit 2">Unit 2</option>
+              <option value="Unit 3">Unit 3</option>
+              <option value="Unit 4">Unit 4</option>
+              <option value="Unit 5">Unit 5</option>
+              <option value="Unit 6">Unit 6</option>
+              <option value="Mid 1">Mid 1 Prep / Material</option>
+              <option value="Mid 2">Mid 2 Prep / Material</option>
+              <option value="Assignments">Assignments</option>
+              <option value="PYQ">Previous Year Questions (PYQ)</option>
+            </select>
+          </div>
 
           <div>
             <label class="block text-xs font-semibold text-gray-400 mb-1">Academic Year</label>
@@ -142,7 +142,7 @@
     const SUPABASE_URL = 'https://ltfkzkxiuvbvksugocna.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx0Zmt6a3hpdXZidmtzdWdvY25hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NDEwNDYsImV4cCI6MjEwOTAxNzA0Nn0.iPAsbG4Fd-uG4kUm8LvXtKs3XuAazS-8k-auvj74ptE';
     
-    // Replace with your exact Supabase Storage Bucket name!
+    // Make sure this matches your exact bucket name in Supabase Storage!
     const BUCKET_NAME = 'materials';
 
     let supabaseClient = null;
@@ -320,7 +320,6 @@
         const cleanPass = pass.trim();
         const hashedInput = await hashString(cleanPass);
         
-        // Exact matches, lowercase, and SHA-256 hash checks
         const isMatch = 
           cleanPass === "Surya Is Goat" || 
           cleanPass === "1249" || 
